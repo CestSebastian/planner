@@ -1,0 +1,20 @@
+#graph {
+    position: relative;
+    background-color: #bbb;
+    user-select: none;
+}
+.node {
+    border: 1px solid #69f;
+    padding: 20px;
+    border-radius: 30px;
+    position: absolute;
+    background-color: #fff;
+    user-select: none;
+}
+
+.link {
+    position: absolute;
+    height: 1px;
+    background-color: #000;
+    transform-origin: 0 100%;
+}

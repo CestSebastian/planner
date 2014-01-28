@@ -2,6 +2,7 @@
 
 var lastNodeId = 0;
 var Graph = {
+    'selectedNodeId' : null,
     'nodes' : [
         new Node({ id : 'node_' + lastNodeId++, text : 'Project', x : 489, y : 12 }),
         new Node({ id : 'node_' + lastNodeId++, text : 'Resources', x : 301, y : 90 }),
@@ -14,11 +15,22 @@ var Graph = {
     'links' : [
         [0, 1], [0, 6], [1, 2], [1, 3], [1, 4], [4, 5], [5, 6]
     ],
+    'getNodeById' : function (nodeId) {
+        var node;
+        
+        for (var i = 0; i < this.nodes.length; i++) {
+            if (this.nodes[i].id === nodeId) {
+                node = this.nodes[i];
+            }
+        }
+        
+        return node;
+    },
     'addNode' : function (text) {
         var newNode = new Node({ id : 'node_' + lastNodeId++, text : text });
         
         this.nodes.push(newNode);
-        newNode.render();
+        this.renderNodes();
     },
     'renderNodes' : function() {
         var self = this;
@@ -28,6 +40,22 @@ var Graph = {
             this.nodes[i].on('dragged', function() {
                 self.renderLinks(this.id);
             });
+            
+            this.nodes[i].on('selected', function() {
+                self.selectNode(this.id);
+            });
+        }
+    },
+    'selectNode' : function (nodeId) {
+        if (this.selectedNodeId) {
+            this.getNodeById(this.selectedNodeId).domReference.classList.remove('selected');
+        }
+        
+        var node = this.getNodeById(nodeId);
+        
+        if (node) {
+            node.domReference.classList.add('selected');
+            this.selectedNodeId = nodeId;
         }
     },
     'renderLinks' : function(forNodeId) {

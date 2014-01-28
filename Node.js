@@ -39,11 +39,29 @@ Node.prototype = Object.create(new Rss.EventEmitter(), {
     },
     'initBehavior' : {
         'value' : function() {
-            var firstLayerX, firstLayerY, self = this;
+            var firstLayerX, firstLayerY, self = this, newTop, newLeft;
             
             function drag(event) {
-                this.style.top = event.clientY - firstLayerY + 'px';
-                this.style.left = event.clientX - firstLayerX + 'px';
+                newTop = event.clientY - this.parentNode.offsetTop - firstLayerY;
+                newLeft = event.clientX - this.parentNode.offsetLeft - firstLayerX;
+                
+                if (newTop < 0) {
+                    newTop = 0;
+                } else if (newTop > this.parentNode.offsetHeight - this.offsetHeight) {
+                    newTop = this.parentNode.offsetHeight - this.offsetHeight;
+                }
+                
+                if (newLeft < 0) {
+                    newLeft = 0;
+                } else if (newLeft > this.parentNode.offsetWidth - this.offsetWidth) {
+                    newLeft = this.parentNode.offsetWidth - this.offsetWidth;
+                }
+                
+                self.x = newLeft;
+                self.y = newTop;
+                
+                this.style.top = newTop + 'px';
+                this.style.left = newLeft + 'px';
                 
                 self.emit('dragged');
             }
@@ -62,6 +80,11 @@ Node.prototype = Object.create(new Rss.EventEmitter(), {
 
             document.addEventListener('mouseup', function() {
                 document.onmousemove = null;
+            });
+            
+            this.domReference.addEventListener('click', function(event) {
+                this.classList.add('selected');
+                self.emit('selected');
             });
         },
         'enumerable' : true

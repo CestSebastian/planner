@@ -86,6 +86,10 @@ Node.prototype = Object.create(new Rss.EventEmitter(), {
                 this.classList.add('selected');
                 self.emit('selected');
             });
+            
+            this.domReference.addEventListener('dblclick', function(event) {
+                
+            });
         },
         'enumerable' : true
     }

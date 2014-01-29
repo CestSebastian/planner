@@ -2,6 +2,7 @@ body {
     width: 1200px;
     margin: 0px auto;
     background-color: #009999;
+    font-family: Verdana;
 }
 
 body h1 {
@@ -21,11 +22,9 @@ body h1 {
 #graph {
     position: relative;
     background-color: #555555;
-    user-select: none;
     float: left;
     width: 900px;
     height: 800px;
-    -moz-user-select: none;
 }
 
 .node {
@@ -35,10 +34,21 @@ body h1 {
     position: absolute;
     background-color: #006363;
     color: #CCCCCC;
+    line-height: 20px;
+    font-size: 16px;
 }
 
 .node.selected {
     border: 2px solid #FF9999;
+}
+
+.node form {
+    margin: 0px;
+}
+
+.node form input {
+    height : 20px;
+    border: 0;
 }
 
 .link {
@@ -46,6 +56,21 @@ body h1 {
     height: 2px;
     background-color: #CCCCCC;
     transform-origin: 0 100%;
+    -webkit-transform-origin: 0 100%;
+}
+
+#connect {
+    position: absolute;
+    width: 20px;
+    height : 20px;
+    text-align: center;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+}
+
+#connect:hover {
+    color: #9f9;
 }
 
 .clearfix {

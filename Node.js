@@ -67,12 +67,18 @@ Node.prototype = Object.create(new Rss.EventEmitter(), {
             }
             
             this.domReference.addEventListener('mousedown', function(event) {
+                if (event.target !== this) {
+                    return;
+                }
                 firstLayerX = event.layerX;
                 firstLayerY = event.layerY;
                 document.onmousemove = drag.bind(this);
             });
 
             this.domReference.addEventListener('mouseover', function(event) {
+                if (this.parentNode.lastChild === this) {
+                    return;
+                }
                 var parentNode = this.parentNode;
                 parentNode.removeChild(this);
                 parentNode.appendChild(this);
@@ -83,12 +89,50 @@ Node.prototype = Object.create(new Rss.EventEmitter(), {
             });
             
             this.domReference.addEventListener('click', function(event) {
+                if (this.classList.contains('selected')) {
+                    return;
+                }
                 this.classList.add('selected');
                 self.emit('selected');
             });
             
             this.domReference.addEventListener('dblclick', function(event) {
+                if (event.target !== this || this.querySelector('form') !== null) {
+                    return;
+                }
+                var formElement = document.createElement('form'),
+                    textInput = document.createElement('input');
+                    
+                textInput.type = "text";
+                textInput.value = self.text;
+                textInput.autofocus = 'autofocus';
+                textInput.style.width = this.offsetWidth - 44 + 'px';
                 
+                formElement.appendChild(textInput);
+                
+                textInput.addEventListener('load', function() {
+                    this.focus();
+                });
+                
+                formElement.addEventListener('submit', updateText);
+                this.parentNode.addEventListener('click', updateText);
+                
+                function updateText(event) {
+                    if (event.type === 'click' && event.target !== self.domReference.parentNode) {
+                        return;
+                    }
+                    self.text = textInput.value;
+                    self.domReference.removeChild(formElement);
+                    self.domReference.textContent = self.text;
+                    self.domReference.parentNode.removeEventListener('click', updateText);
+                    
+                    if (event.type === 'submit') {
+                        event.preventDefault();
+                    }
+                }
+                
+                this.textContent = '';
+                this.appendChild(formElement);
             });
         },
         'enumerable' : true

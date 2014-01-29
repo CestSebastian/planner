@@ -19,8 +19,18 @@
                 <input type="text" name="node_text" />
                 <input type="submit" value="Add" />
             </form>
+            <p><strong>Hint:</strong> Double click a node to edit.</p>
+            <p id="selected_node_id">Selected node id: <strong></strong></p>
+            <p id="selected_node_text">Selected node text: <strong></strong></p>
+            <br/>
+            <p>Connect selected node to:</p>
+            <form id="connect_selected_form">
+                <select></select>
+                <input type="submit" value="Connect" />
+            </form>
         </div>
         <div id="graph">
+            <div id="connect">/</div>
         </div>
         <div class="clearfix"></div>
     </body>

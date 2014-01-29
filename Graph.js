@@ -56,6 +56,8 @@ var Graph = {
         if (node) {
             node.domReference.classList.add('selected');
             this.selectedNodeId = nodeId;
+            selected_node_id.querySelector('strong').textContent = nodeId;
+            selected_node_text.querySelector('strong').textContent = node.text;
         }
     },
     'renderLinks' : function(forNodeId) {
@@ -94,6 +96,7 @@ var Graph = {
 
             style = 'width: ' + length + 'px;';
             style += 'transform: ' + transform + ';';
+            style += '-webkit-transform: ' + transform + ';';
             style += 'left: ' + x1 + 'px;';
             style += 'top: ' + y1 + 'px;';
             
